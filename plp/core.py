@@ -73,6 +73,7 @@ class PostLuminexProcessor(object):
 
     def _find_data(self):
         """ Build list of source data files. """
+        print('Reading input data...')
         # Walk source directory building list of xls files.
         target_extension = '/*.xls'
         target_paths = self.data_source + target_extension
@@ -205,6 +206,7 @@ class PostLuminexProcessor(object):
 
     def process_data(self):
         """ Process plp data. """
+        print('Processing data...')
         # Iterate input files.
         for file in self._input_files:
 
