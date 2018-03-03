@@ -1,3 +1,4 @@
+import os
 import glob
 import numpy as np
 import pandas as pd
@@ -113,22 +114,48 @@ class PostLuminexProcessor(object):
             print('Model polynomial function:')
             print(self._model_func)
 
-        # Draw.
-        if self.draw:
+        # Draw or save model image.
+        if self.draw or self.save_model_img:
+
             # Create data to draw model fit function.
             x_test = np.linspace(x[0], x[-1], 50)
             y_test = self._model_func(x_test)
 
             # Add plot to figure.
-            fig = plt.figure()
+            fig = plt.figure(figsize=(10, 8), dpi=100)
             ax1 = fig.add_subplot(111)
 
-            # Build and show plot.
+            # Build plot.
             ax1.plot(x, y, 'o', x_test, y_test)
             ax1.set_title('Model')
             ax1.set_xlabel('FI - Bkgd')
             ax1.set_ylabel('Exp Conc')
-            plt.show()
+
+            # Save model image.
+            if self.save_model_img:
+
+                # Save image directory.
+                save_image_directory = os.path.join(
+                    self.data_destination, 'Saved Model Images',
+                    self._xls_name.split('_')[0])
+                if not os.path.exists(save_image_directory):
+                    os.makedirs(save_image_directory)
+
+                # Save image file path.
+                save_image_path = os.path.join(
+                    save_image_directory,
+                    '_'.join(self._xls_name.split('_')[0:2])
+                    + '_' + self._bio_marker + '.png')
+
+                # Save plot as png.
+                plt.savefig(save_image_path)
+
+            # Draw.
+            if self.draw:
+                plt.show()
+
+            # Clear plot ready for next.
+            plt.close()
 
     def _infer_values_from_model(self):
         """ Infer values from data. """
