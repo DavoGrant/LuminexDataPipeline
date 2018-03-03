@@ -29,6 +29,9 @@ class PostLuminexProcessor(object):
     Optional:
     ========
 
+    save_model_img : boolean, default True,
+        toggle the saving of the fitted model graphs.
+
     draw : boolean, default False,
         toggle the plotting of the fitted model graphs.
 
