@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from plp.reservoir import DataReservoirObject
+from plp.reservoir import DataReservoir
 
 
 class PostLuminexProcessor(object):
@@ -51,6 +51,7 @@ class PostLuminexProcessor(object):
         self.data_destination = destination
 
         # Private attributes.
+        self._data_reservoir = None
         self._input_files = []
         self._xls_name = None
         self._xls_data = pd.DataFrame()
@@ -63,6 +64,7 @@ class PostLuminexProcessor(object):
 
         # Init methods.
         self._find_data()
+        self._setup_data_reservoir()
 
     def __repr__(self):
         """ String repr of object. """
@@ -79,6 +81,11 @@ class PostLuminexProcessor(object):
         if self.verbose:
             print('Found input files:')
             print(self._input_files)
+
+    def _setup_data_reservoir(self):
+        """ Instantiate a data reservoir object. """
+        self._data_reservoir = DataReservoir(
+            self.data_destination, verbose=self.verbose)
 
     def _fit_model(self):
         """ Fit model data. """
@@ -157,7 +164,7 @@ class PostLuminexProcessor(object):
     def _reservoir_handling(self):
         """ Send the resulting processed data to the reservoir for handling. """
         # Send processed data along with xls file name and tab name to reservoir.
-        DataReservoirObject.add_data(
+        self._data_reservoir.add_data(
             '_'.join(self._xls_name.split('_')[0:2]), self._bio_marker,
             self._processed_data)
 
@@ -167,7 +174,7 @@ class PostLuminexProcessor(object):
             print('from xls file: {}'.format(self._xls_data))
 
         # Check reservoir and write data to xls files if ready.
-        DataReservoirObject.check_reservoir()
+        self._data_reservoir.check_reservoir()
 
     def process_data(self):
         """ Process plp data. """
@@ -207,5 +214,5 @@ class PostLuminexProcessor(object):
                 self._reservoir_handling()
 
         # Make final check that reservoir is in expected state.
-        DataReservoirObject.check_reservoir(final_check=True)
+        self._data_reservoir.check_reservoir(final_check=True)
 

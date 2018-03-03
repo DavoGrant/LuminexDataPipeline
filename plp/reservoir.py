@@ -8,9 +8,9 @@ from openpyxl import load_workbook
 class DataReservoir(object):
     """ Reservoir for handling data as it is processed. """
 
-    def __init__(self, verbose=False):
+    def __init__(self, data_destination, verbose=False):
         self.verbose = verbose
-        self._data_destination = '/users/grantd/Data/PostLuminexProcessor/test/data/output'
+        self._data_destination = data_destination
         self._required_bio_sheets = 3
         self._reservoir = pd.DataFrame()
 
@@ -91,6 +91,3 @@ class DataReservoir(object):
 
         if final_check:
             print('All data has been processed.')
-
-
-DataReservoirObject = DataReservoir()
