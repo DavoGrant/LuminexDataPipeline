@@ -1,9 +1,10 @@
+import os
 import glob
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from plp.reservoir import DataReservoirObject
+from plp.reservoir import DataReservoir
 
 
 class PostLuminexProcessor(object):
@@ -29,6 +30,9 @@ class PostLuminexProcessor(object):
     Optional:
     ========
 
+    save_model_img : boolean, default True,
+        toggle the saving of the fitted model graphs.
+
     draw : boolean, default False,
         toggle the plotting of the fitted model graphs.
 
@@ -48,6 +52,7 @@ class PostLuminexProcessor(object):
         self.data_destination = destination
 
         # Private attributes.
+        self._data_reservoir = None
         self._input_files = []
         self._xls_name = None
         self._xls_data = pd.DataFrame()
@@ -60,6 +65,7 @@ class PostLuminexProcessor(object):
 
         # Init methods.
         self._find_data()
+        self._setup_data_reservoir()
 
     def __repr__(self):
         """ String repr of object. """
@@ -76,6 +82,11 @@ class PostLuminexProcessor(object):
         if self.verbose:
             print('Found input files:')
             print(self._input_files)
+
+    def _setup_data_reservoir(self):
+        """ Instantiate a data reservoir object. """
+        self._data_reservoir = DataReservoir(
+            self.data_destination, verbose=self.verbose)
 
     def _fit_model(self):
         """ Fit model data. """
@@ -103,22 +114,48 @@ class PostLuminexProcessor(object):
             print('Model polynomial function:')
             print(self._model_func)
 
-        # Draw.
-        if self.draw:
+        # Draw or save model image.
+        if self.draw or self.save_model_img:
+
             # Create data to draw model fit function.
             x_test = np.linspace(x[0], x[-1], 50)
             y_test = self._model_func(x_test)
 
             # Add plot to figure.
-            fig = plt.figure()
+            fig = plt.figure(figsize=(10, 8), dpi=100)
             ax1 = fig.add_subplot(111)
 
-            # Build and show plot.
+            # Build plot.
             ax1.plot(x, y, 'o', x_test, y_test)
             ax1.set_title('Model')
             ax1.set_xlabel('FI - Bkgd')
             ax1.set_ylabel('Exp Conc')
-            plt.show()
+
+            # Save model image.
+            if self.save_model_img:
+
+                # Save image directory.
+                save_image_directory = os.path.join(
+                    self.data_destination, 'Saved Model Images',
+                    self._xls_name.split('_')[0])
+                if not os.path.exists(save_image_directory):
+                    os.makedirs(save_image_directory)
+
+                # Save image file path.
+                save_image_path = os.path.join(
+                    save_image_directory,
+                    '_'.join(self._xls_name.split('_')[0:2])
+                    + '_' + self._bio_marker + '.png')
+
+                # Save plot as png.
+                plt.savefig(save_image_path)
+
+            # Draw.
+            if self.draw:
+                plt.show()
+
+            # Clear plot ready for next.
+            plt.close()
 
     def _infer_values_from_model(self):
         """ Infer values from data. """
@@ -154,7 +191,7 @@ class PostLuminexProcessor(object):
     def _reservoir_handling(self):
         """ Send the resulting processed data to the reservoir for handling. """
         # Send processed data along with xls file name and tab name to reservoir.
-        DataReservoirObject.add_data(
+        self._data_reservoir.add_data(
             '_'.join(self._xls_name.split('_')[0:2]), self._bio_marker,
             self._processed_data)
 
@@ -164,7 +201,7 @@ class PostLuminexProcessor(object):
             print('from xls file: {}'.format(self._xls_data))
 
         # Check reservoir and write data to xls files if ready.
-        DataReservoirObject.check_reservoir()
+        self._data_reservoir.check_reservoir()
 
     def process_data(self):
         """ Process plp data. """
@@ -204,5 +241,5 @@ class PostLuminexProcessor(object):
                 self._reservoir_handling()
 
         # Make final check that reservoir is in expected state.
-        DataReservoirObject.check_reservoir(final_check=True)
+        self._data_reservoir.check_reservoir(final_check=True)
 

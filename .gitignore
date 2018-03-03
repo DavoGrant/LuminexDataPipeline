@@ -1,7 +1,10 @@
 # Project specific #
 ###################
-/data
+*/data
 *.xls
+*.xlsx
+*.png
+*.jpg
 
 # Compiled source #
 ###################
