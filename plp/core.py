@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from plp.inspector import DataInspector
 from plp.reservoir import DataReservoir
 
 
@@ -65,6 +66,7 @@ class PostLuminexProcessor(object):
 
         # Init methods.
         self._find_data()
+        self._inspect_data()
         self._setup_data_reservoir()
 
     def __repr__(self):
@@ -83,6 +85,11 @@ class PostLuminexProcessor(object):
         if self.verbose:
             print('Found input files:')
             print(self._input_files)
+
+    def _inspect_data(self):
+        """ Conduct pre-processing data checks. """
+        print('Checking input data...')
+        data_inspector = DataInspector(verbose=self.verbose)
 
     def _setup_data_reservoir(self):
         """ Instantiate a data reservoir object. """
