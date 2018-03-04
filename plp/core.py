@@ -95,6 +95,9 @@ class PostLuminexProcessor(object):
         # Perform checks and fixes on data destination.
         data_inspector.check_destination_status()
 
+        # Perform checks on data source.
+        data_inspector.check_data_source(self._input_files)
+
     def _setup_data_reservoir(self):
         """ Instantiate a data reservoir object. """
         self._data_reservoir = DataReservoir(
