@@ -89,7 +89,11 @@ class PostLuminexProcessor(object):
     def _inspect_data(self):
         """ Conduct pre-processing data checks. """
         print('Checking input data...')
-        data_inspector = DataInspector(verbose=self.verbose)
+        data_inspector = DataInspector(
+            self.data_source, self.data_destination, verbose=self.verbose)
+
+        # Perform checks and fixes on data destination.
+        data_inspector.check_destination_status()
 
     def _setup_data_reservoir(self):
         """ Instantiate a data reservoir object. """
