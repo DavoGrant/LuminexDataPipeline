@@ -225,7 +225,7 @@ class PostLuminexProcessor(object):
         for file in self._input_files:
 
             # Xls file name.
-            self._xls_name = file.split('/')[-1].split('.')[0]
+            self._xls_name = os.path.split(file)[-1].split('.')[0]
 
             # Read data in from xls to ordered dictionary of pandas dataframes.
             self._xls_data = pd.read_excel(

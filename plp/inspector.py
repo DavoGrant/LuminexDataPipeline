@@ -1,6 +1,7 @@
 import os
 import glob
 import numpy as np
+import pandas as pd
 from itertools import groupby
 
 
@@ -12,6 +13,8 @@ class DataInspector(object):
         self.data_source = source
         self.data_destination = destination
         self._required_bio_sheets = 3
+        self._required_data_columns = ['Analyte', 'FI - Bkgd',
+                                       'Exp Conc', 'Dilution']
 
     def __repr__(self):
         """ String repr of object. """
@@ -46,7 +49,7 @@ class DataInspector(object):
                           'source directory selected.')
 
         # Check all three bio-sheets present for each sample/analyte.
-        input_files = [os.path.split(f)[1] for f in input_paths]
+        input_files = [os.path.split(f)[-1] for f in input_paths]
 
         # Sorting and grouping key. By file name (run), tab name (bio marker).
         key = lambda x: x.split('_')[0]
@@ -67,6 +70,13 @@ class DataInspector(object):
                     'found for the {} samples.'.format(
                         str(group.shape[0]), str(self._required_bio_sheets),
                         str(group[0].split('_')[0])))
+
+        # Spot check first bio-sheet is in expected format.
+        spot_check_xls_file = pd.read_excel(
+            input_paths[0], sheet_name=0, header=8, skip_footer=9)
+        if not set(self._required_data_columns).issubset(spot_check_xls_file):
+            raise ValueError('Bio-sheet does not contain the expected data '
+                             'columns of {}'.format(self._required_data_columns))
 
         # Speak.
         if self.verbose:
