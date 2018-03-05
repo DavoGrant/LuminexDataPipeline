@@ -74,7 +74,8 @@ class DataInspector(object):
         # Spot check first bio-sheet is in expected format.
         spot_check_xls_file = pd.read_excel(
             input_paths[0], sheet_name=0, header=8, skip_footer=9)
-        if not set(self._required_data_columns).issubset(spot_check_xls_file):
+        spot_check_data_columns = spot_check_xls_file.columns.tolist()
+        if not set(self._required_data_columns).issubset(spot_check_data_columns):
             raise ValueError('Bio-sheet does not contain the expected data '
                              'columns of {}'.format(self._required_data_columns))
 
