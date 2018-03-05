@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from plp.inspector import DataInspector
 from plp.reservoir import DataReservoir
 
 
@@ -65,6 +66,7 @@ class PostLuminexProcessor(object):
 
         # Init methods.
         self._find_data()
+        self._inspect_data()
         self._setup_data_reservoir()
 
     def __repr__(self):
@@ -83,6 +85,18 @@ class PostLuminexProcessor(object):
         if self.verbose:
             print('Found input files:')
             print(self._input_files)
+
+    def _inspect_data(self):
+        """ Conduct pre-processing data checks. """
+        print('Checking input data...')
+        data_inspector = DataInspector(
+            self.data_source, self.data_destination, verbose=self.verbose)
+
+        # Perform checks and fixes on data destination.
+        data_inspector.check_destination_status()
+
+        # Perform checks on data source.
+        data_inspector.check_data_source(self._input_files)
 
     def _setup_data_reservoir(self):
         """ Instantiate a data reservoir object. """
@@ -211,7 +225,7 @@ class PostLuminexProcessor(object):
         for file in self._input_files:
 
             # Xls file name.
-            self._xls_name = file.split('/')[-1].split('.')[0]
+            self._xls_name = os.path.split(file)[-1].split('.')[0]
 
             # Read data in from xls to ordered dictionary of pandas dataframes.
             self._xls_data = pd.read_excel(
