@@ -75,7 +75,7 @@ class PostLuminexProcessor(object):
 
     def _find_data(self):
         """ Build list of source data files. """
-        print('Reading input data...')
+        print('Reading data...')
         # Walk source directory building list of xls files.
         target_extension = '/*.xls'
         target_paths = self.data_source + target_extension
@@ -88,7 +88,7 @@ class PostLuminexProcessor(object):
 
     def _inspect_data(self):
         """ Conduct pre-processing data checks. """
-        print('Checking input data...')
+        print('Checking data...')
         data_inspector = DataInspector(
             self.data_source, self.data_destination, verbose=self.verbose)
 

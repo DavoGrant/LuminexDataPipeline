@@ -90,4 +90,8 @@ class DataReservoir(object):
                 self._write_data(group)
 
         if final_check:
-            print('All data has been processed.')
+            if len(self._reservoir.columns) == 0:
+                print('All data has been processed.')
+            else:
+                raise ValueError('Not all data was processed. Data that failed '
+                                 'was {}'.format(self._reservoir.columns))
