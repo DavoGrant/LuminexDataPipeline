@@ -8,10 +8,10 @@ from openpyxl import load_workbook
 class DataReservoir(object):
     """ Reservoir for handling data as it is processed. """
 
-    def __init__(self, data_destination, verbose=False):
+    def __init__(self, data_destination, required_bio_sheets, verbose=False):
         self.verbose = verbose
         self._data_destination = data_destination
-        self._required_bio_sheets = 3
+        self._required_bio_sheets = required_bio_sheets
         self._reservoir = pd.DataFrame()
 
     def __repr__(self):

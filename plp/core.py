@@ -43,14 +43,15 @@ class PostLuminexProcessor(object):
 
     """
 
-    def __init__(self, source, destination, save_model_img=True,
-                 draw=False, verbose=False):
+    def __init__(self, source, destination, required_bio_sheets,
+                 save_model_img=True, draw=False, verbose=False):
         # Inputs.
         self.verbose = verbose
         self.draw = draw
         self.save_model_img = save_model_img
         self.data_source = source
         self.data_destination = destination
+        self._required_bio_sheets = required_bio_sheets
 
         # Private attributes.
         self._data_reservoir = None
@@ -90,7 +91,8 @@ class PostLuminexProcessor(object):
         """ Conduct pre-processing data checks. """
         print('Checking data...')
         data_inspector = DataInspector(
-            self.data_source, self.data_destination, verbose=self.verbose)
+            self.data_source, self.data_destination,
+            self._required_bio_sheets, verbose=self.verbose)
 
         # Perform checks and fixes on data destination.
         data_inspector.check_destination_status()
@@ -101,7 +103,8 @@ class PostLuminexProcessor(object):
     def _setup_data_reservoir(self):
         """ Instantiate a data reservoir object. """
         self._data_reservoir = DataReservoir(
-            self.data_destination, verbose=self.verbose)
+            self.data_destination, self._required_bio_sheets,
+            verbose=self.verbose)
 
     def _fit_model(self):
         """ Fit model data. """

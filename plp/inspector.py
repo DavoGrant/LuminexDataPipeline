@@ -8,11 +8,11 @@ from itertools import groupby
 class DataInspector(object):
     """ Inspector for conducting pre-processing data checks and fixes. """
 
-    def __init__(self, source, destination, verbose=False):
+    def __init__(self, source, destination, required_bio_sheets, verbose=False):
         self.verbose = verbose
         self.data_source = source
         self.data_destination = destination
-        self._required_bio_sheets = 3
+        self._required_bio_sheets = required_bio_sheets
         self._required_data_columns = ['Analyte', 'FI - Bkgd',
                                        'Exp Conc', 'Dilution']
 
