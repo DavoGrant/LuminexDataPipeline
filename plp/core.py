@@ -22,20 +22,23 @@ class PostLuminexProcessor(object):
 
     source : string,
         absolute path to the root directory containing the plp
-        xls files that the user wants processing.
+        xls files that the user wants processing,
 
     destination : string,
         absolute path to the directory the user wants the processed
-        plp data to be written to.
+        plp data to be written to,
+
+    required_bio_sheets : int,
+        number of bio-sheets data is to be concatenated across.
 
     Optional:
     ========
 
     save_model_img : boolean, default True,
-        toggle the saving of the fitted model graphs.
+        toggle the saving of the fitted model graphs,
 
     draw : boolean, default False,
-        toggle the plotting of the fitted model graphs.
+        toggle the plotting of the fitted model graphs,
 
     verbose : boolean, default False,
         toggle verbosity of console printing during the reading,

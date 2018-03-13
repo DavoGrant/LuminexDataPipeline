@@ -29,7 +29,7 @@ class TestLuminexProcessor(unittest.TestCase):
         # Instantiate plp class.
         plp = PostLuminexProcessor(
             self.source, self.destination, self.number_of_bio_sheets,
-            save_model_img=True, verbose=True, draw=True)
+            save_model_img=True, verbose=False, draw=False)
 
         # Process data.
         plp.process_data()

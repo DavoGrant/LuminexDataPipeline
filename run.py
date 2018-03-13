@@ -7,7 +7,7 @@ source = '/users/grantd/Data/PostLuminexProcessor/test/data/input'
 # Output processed data directory.
 destination = '/users/grantd/Data/PostLuminexProcessor/test/data/output'
 
-# Number of bio-sheets.
+# Integer number of bio-sheets.
 number_of_bio_sheets = 3
 
 # Instantiate plp class.
