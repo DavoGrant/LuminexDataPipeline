@@ -10,11 +10,11 @@ from plp.reservoir import DataReservoir
 
 class PostLuminexProcessor(object):
     """
-    Core post plp processing class.
+    Core post Luminex processing class.
 
     Looks in source directory for xls files. Iterates over each file
     over each tab. Fits model data. Uses fit to infer concentrations
-    of tracer fro observed data. Results are sent to a data reservoir
+    of tracer for observed data. Results are sent to a data reservoir
     class for concatenation and writing.
 
     Args:
