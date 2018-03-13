@@ -1,7 +1,7 @@
 # LuminexDataPipeline Documentation
 
 Last updated: 13.03.2018<br>
-Version: 0.01<br>
+Version: 0.02<br>
 Python version: 3.5<br>
 
 ## Contents
