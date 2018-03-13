@@ -6,7 +6,7 @@ Python version: 3.5<br>
 
 ## Contents
 [Overview](#overview)<br>
-[Quick Start](#quick_start)<br>
+[Quick Start](#quick-start)<br>
 [Functions](#functions)<br>
 
 
