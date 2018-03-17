@@ -2,10 +2,10 @@ from plp.core import PostLuminexProcessor
 
 
 # Input data source directory.
-source = '/users/grantd/Data/LuminexDataPipeline/test/data/input'
+source = 'path/to/input/data/dir'
 
 # Output processed data directory.
-destination = '/users/grantd/Data/LuminexDataPipeline/test/data/output'
+destination = 'path/to/output/data/dir'
 
 # Integer number of bio-sheets.
 number_of_bio_sheets = 3
